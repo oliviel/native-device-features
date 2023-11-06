@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { View, StyleSheet, Alert, Image, Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import {
   getCurrentPositionAsync,
   useForegroundPermissions,
@@ -8,10 +9,11 @@ import {
 import { WebView } from "react-native-webview";
 import OutlineButton from "./OutlineButton";
 import { Theme } from "../constants/theme";
-// import { getMapPreview } from "../utils/map";
 import RenderIf from "./RenderIf";
+import { NavigationProps } from "../App";
 
 const LocationPicker = () => {
+  const navigation = useNavigation<NavigationProps>();
   const [locationPermission, requestPermission] = useForegroundPermissions();
   const [pickedLocation, setPickedLocation] = useState({
     lat: 0,
@@ -53,7 +55,9 @@ const LocationPicker = () => {
     });
   }
 
-  function handlePickOnMap() {}
+  function handlePickOnMap() {
+    navigation.navigate("Map");
+  }
 
   return (
     <View>

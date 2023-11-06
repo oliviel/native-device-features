@@ -2,12 +2,22 @@ import { StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import AllPlaces from "./screens/AllPlaces";
 import AddPlace from "./screens/AddPlace";
 import IconButton from "./components/IconButton";
 import { Theme } from "./constants/theme";
+import Map from "./screens/Map";
 
-const Stack = createNativeStackNavigator();
+type RootStackParamList = {
+  AllPlaces: undefined;
+  AddPlace: undefined;
+  Map: undefined;
+};
+
+export type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
@@ -51,6 +61,7 @@ export default function App() {
               headerTitle: "Add Place",
             }}
           />
+          <Stack.Screen name="Map" component={Map} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
