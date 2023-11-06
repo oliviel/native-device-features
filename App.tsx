@@ -1,5 +1,5 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AllPlaces from "./screens/AllPlaces";
@@ -12,11 +12,11 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
-            headerTintColor: Theme.colors.gray700,
+            headerTintColor: Theme.colors.white,
             headerStyle: {
               backgroundColor: Theme.colors.primary500,
             },
@@ -24,6 +24,7 @@ export default function App() {
               backgroundColor: Theme.colors.gray700,
             },
             headerBackTitleVisible: false,
+            animation: "slide_from_right",
           }}
         >
           <Stack.Screen
@@ -59,8 +60,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
