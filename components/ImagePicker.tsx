@@ -9,7 +9,11 @@ import RenderIf from "./RenderIf";
 import { Theme } from "../constants/theme";
 import OutlineButton from "./OutlineButton";
 
-const ImagePicker = () => {
+interface Props {
+  onPickImage: (imgUri: string) => void;
+}
+
+const ImagePicker = ({ onPickImage }: Props) => {
   const [camaraPermission, requestPermission] = useCameraPermissions();
   const [pickedImage, setPickedImage] = useState("");
 
@@ -47,6 +51,7 @@ const ImagePicker = () => {
 
     const currentImage = image.assets ? image.assets[0].uri : "";
     setPickedImage(currentImage);
+    onPickImage(currentImage);
   }
 
   return (

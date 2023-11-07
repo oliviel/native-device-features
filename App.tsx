@@ -1,19 +1,31 @@
 import { StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, RouteProp } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 import AllPlaces from "./screens/AllPlaces";
 import AddPlace from "./screens/AddPlace";
 import IconButton from "./components/IconButton";
 import { Theme } from "./constants/theme";
 import Map from "./screens/Map";
+import { IPlace } from "./models/place";
 
-type RootStackParamList = {
-  AllPlaces: undefined;
-  AddPlace: undefined;
+export type RootStackParamList = {
+  AllPlaces: { place: IPlace };
+  AddPlace: { pickedLocation: { lat: number; lng: number } };
   Map: undefined;
 };
+
+export type RoutesProp<T extends keyof RootStackParamList> = RouteProp<
+  RootStackParamList,
+  T
+>;
+
+export type ScreenProps<T extends keyof RootStackParamList> =
+  NativeStackScreenProps<RootStackParamList, T>;
 
 export type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
 

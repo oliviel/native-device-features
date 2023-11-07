@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, StyleSheet, Alert, Image, Text } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import {
+  useNavigation,
+  useRoute,
+  useIsFocused,
+} from "@react-navigation/native";
 import {
   getCurrentPositionAsync,
   useForegroundPermissions,
@@ -10,15 +14,45 @@ import { WebView } from "react-native-webview";
 import OutlineButton from "./OutlineButton";
 import { Theme } from "../constants/theme";
 import RenderIf from "./RenderIf";
-import { NavigationProps } from "../App";
+import { NavigationProps, RoutesProp } from "../App";
+import { getAddress } from "../utils/map";
+import { Address } from "./PlaceForm";
 
-const LocationPicker = () => {
+interface Props {
+  onPickLocation: (location: Address) => void;
+}
+
+const LocationPicker = ({ onPickLocation }: Props) => {
+  const isFocused = useIsFocused();
+  const route = useRoute<RoutesProp<"AddPlace">>();
   const navigation = useNavigation<NavigationProps>();
   const [locationPermission, requestPermission] = useForegroundPermissions();
   const [pickedLocation, setPickedLocation] = useState({
     lat: 0,
     lng: 0,
   });
+
+  useEffect(() => {
+    if (route?.params && isFocused) {
+      const mapPickedLocation = {
+        lat: route.params.pickedLocation.lat,
+        lng: route.params.pickedLocation.lng,
+      };
+
+      setPickedLocation(mapPickedLocation);
+
+      async function handlelocation() {
+        const address = await getAddress(
+          mapPickedLocation.lat,
+          mapPickedLocation.lng
+        );
+
+        onPickLocation({ ...mapPickedLocation, address });
+      }
+
+      handlelocation();
+    }
+  }, [route, isFocused, onPickLocation]);
 
   async function verifyPermission() {
     if (locationPermission?.status === PermissionStatus.UNDETERMINED) {
@@ -47,12 +81,16 @@ const LocationPicker = () => {
     if (!hasPermission) {
       return;
     }
-    const location = await getCurrentPositionAsync();
+    const { coords } = await getCurrentPositionAsync();
+    const userLocation = {
+      lat: coords.latitude,
+      lng: coords.longitude,
+    };
 
-    setPickedLocation({
-      lat: location.coords.latitude,
-      lng: location.coords.longitude,
-    });
+    const address = await getAddress(userLocation.lat, userLocation.lng);
+
+    setPickedLocation(userLocation);
+    onPickLocation({ ...userLocation, address });
   }
 
   function handlePickOnMap() {

@@ -1,22 +1,22 @@
-interface IPlace {
+export interface IPlace {
   id: string;
   title: string;
   imageUri: string;
   address: string;
-  location: { lat: string; lng: string };
+  location: { lat: number; lng: number };
 }
 
-class Place implements IPlace {
+export class Place implements IPlace {
   id: string;
   title: string;
   imageUri: string;
   address: string;
-  location: { lat: string; lng: string };
+  location: { lat: number; lng: number };
   constructor(
     title: string,
     imageUri: string,
     address: string,
-    location: { lat: string; lng: string }
+    location: { lat: number; lng: number }
   ) {
     this.title = title;
     this.imageUri = imageUri;

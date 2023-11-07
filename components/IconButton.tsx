@@ -26,7 +26,7 @@ export default IconButton;
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    padding: 8,
+    paddingHorizontal: 8,
     justifyContent: "center",
     alignItems: "center",
   },
